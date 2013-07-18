@@ -2,8 +2,8 @@
 
 class KeywordModel
 {
-    protected $limit = 4;
-    
+    protected $limit = 3;
+
     /**
      * 根据关键字搜索
      */
@@ -28,12 +28,12 @@ class KeywordModel
         $keyword->save();
 
         foreach ($results as $index => $e) {
-            if ($index > $this->limit) {
+            if ($index >= $this->limit) {
                 break;
             }
             $description = ORM::for_table('description')->create();
             $description->keyword_id = $keyword->id;
-            $description->description = '**'.$e->Title.'**'."\n".$e->Description."\n[$e->DisplayUrl]($e->Url)";
+            $description->description = $e->Description."\n$e->DisplayUrl";
             $description->set_expr('updated', 'NOW()');
             $description->save();
         }
