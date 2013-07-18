@@ -21,9 +21,47 @@ function search($q)
     if ($list) {
         return $list;
     }
+
     $response = get_json_response_from_bing($q);
     $obj = json_decode($response);
-    $list = $obj->d->results;
+    $results = $obj->d->results;
+    $list = get_list_from_db($q);
+    if ($list) {
+        return $list;
+    }
+    $keyword = ORM::for_table('keyword')->create();
+    $keyword->name = $q;
+    $keyword->hit = 0;
+    $keyword->set_expr('created', 'NOW()');
+    $keyword->save();
+
+
+    foreach ($results as $index => $e) {
+        if ($index > 5) {
+            break;
+        }
+        $description = ORM::for_table('description')->create();
+        $description->keyword_id = $keyword->id;
+        $description->description = '**'.$e->Title.'**'."\n".$e->Description."\n[$e->DisplayUrl]($e->Url)";
+        $description->set_expr('updated', 'NOW()');
+        $description->save();
+    }
+
+    $list = get_list_from_db($q);
+    return $list;
+}
+
+function get_list_from_db($q)
+{
+    $keywrod = ORM::for_table('keyword')->where('keyword', $q)->find_one();
+    if (!$keyword) {
+        return false;
+    }
+
+    $list = ORM::for_table('description')
+        ->where('keyword_id', $keyword->id)
+        ->order_by_desc('updated');
+        ->find_many();
     return $list;
 }
 function get_json_response_from_bing($q)
@@ -69,7 +107,7 @@ function _post($key = null)
 <html>
 <head>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
-    <title>主动发送消息</title>
+    <title>言简 测试</title>
 </head>
 <body>
     <form>
