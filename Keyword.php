@@ -2,6 +2,8 @@
 
 class KeywordModel
 {
+    protected $limit = 4;
+    
     /**
      * 根据关键字搜索
      */
@@ -26,7 +28,7 @@ class KeywordModel
         $keyword->save();
 
         foreach ($results as $index => $e) {
-            if ($index > 5) {
+            if ($index > $this->limit) {
                 break;
             }
             $description = ORM::for_table('description')->create();
