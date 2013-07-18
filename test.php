@@ -53,14 +53,14 @@ function search($q)
 
 function get_list_from_db($q)
 {
-    $keywrod = ORM::for_table('keyword')->where('keyword', $q)->find_one();
+    $keyword = ORM::for_table('keyword')->where('name', $q)->find_one();
     if (!$keyword) {
         return false;
     }
 
     $list = ORM::for_table('description')
         ->where('keyword_id', $keyword->id)
-        ->order_by_desc('updated');
+        ->order_by_desc('updated')
         ->find_many();
     return $list;
 }
@@ -118,9 +118,7 @@ function _post($key = null)
         <ul>
             <?php foreach ($list as $entry): ?>
                 <li>
-                    <h4><?php echo $entry->Title ?></h4>
-                    <p><?php echo $entry->Description ?></p>
-                    <a href="<?php echo $entry->Url ?>"><?php echo $entry->DisplayUrl ?></a>
+                    <p><?php echo $entry->description ?></p>
                 </li>
             <?php endforeach ?>
         </ul>
