@@ -48,7 +48,7 @@ function _post($key = null)
         <ul>
             <?php foreach ($list as $entry): ?>
                 <li>
-                    <p><?php echo nl2br($entry->description) ?></p>
+                    <p><?php echo $entry->description ?></p>
                 </li>
             <?php endforeach ?>
         </ul>

@@ -1,4 +1,2 @@
-name: sae_frame
-version: 9
 handle:
-- rewrite: if(!is_file()) goto "sae_frame/index.php?%{QUERY_STRING}"
+  - rewrite:if (!is_file() && !is_dir() && path ~ "^/(.*)") goto "index.php/$1"

@@ -10,8 +10,8 @@ require APP_PATH.'vender/wechat/wechat.class.php';
 require APP_PATH.'vender/wechat/wechatext.class.php';
 
 $options = array(
-    'account' => 'cumt.xiaochi@gmail.com',
-    'password' => 'x4stcweixin',
+    'account' => 'xxx@gmail.com',
+    'password' => 'xxx',
     'datapath' => 'saestor://xc222/cookie.txt',
 );
 $we = new Wechatext($options);
